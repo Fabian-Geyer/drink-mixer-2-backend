@@ -6,7 +6,7 @@ from coma2.settings import app, db
 import coma2.constants as c
 
 
-@app.route("/api/ingredient", methods=["POST"])
+@app.route("/api/ingredients", methods=["POST", "GET"])
 def handle_ingredient():
     if request.method == "POST":
         name = request.get_json()["name"]
@@ -16,6 +16,9 @@ def handle_ingredient():
         db.session.add(ingredient)
         db.session.commit()
         return jsonify(ingredient.serialize)
+    if request.method == "GET":
+        return jsonify([elem.serialize for elem in Ingredients.query.all().order_by()])
+        #TODO: allow filtering by alcohol etc.
 
     if __name__ == "__main__":
         app.run(c.DEBUG)
