@@ -1,3 +1,4 @@
 from coma2.settings import db
-from coma2.models.ingredients import db as ingdb
-ingdb.create_all()
+from coma2.models.cocktails import db as cocktail_db
+
+cocktail_db.create_all()
