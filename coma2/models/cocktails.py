@@ -3,13 +3,6 @@ from datetime import datetime
 from coma2.settings import db
 
 
-# cocktail_ingredient = db.Table('cocktail_ingredient',
-#                               db.Column('cocktail_id', db.Integer,
-#                                         db.ForeignKey('cocktail.id')),
-#                               db.Column('ingredient_id', db.Integer,
-#                                         db.ForeignKey('ingredient.id'))
-#                               )
-
 class CocktailIngredient(db.Model):
     __tablename__ = "cocktail_ingredient"
     cocktail_id = db.Column(db.ForeignKey("cocktail.id"), primary_key=True)
