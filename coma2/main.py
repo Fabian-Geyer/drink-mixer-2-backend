@@ -1,5 +1,5 @@
 from flask import jsonify, request, abort
-from coma2.models.cocktails import Ingredient
+from coma2.models.cocktails import Cocktail, Ingredient
 
 from coma2.settings import app, db
 import coma2.constants as c
@@ -24,6 +24,20 @@ def handle_ingredient():
     if request.method == "GET":
         return jsonify([elem.serialize for elem in Ingredient.query.all().order_by()])
         # TODO: allow filtering by alcohol etc.
+
+@app.route("/api/cocktails", methods=["POST", "GET"])
+def handle_cocktail():
+    if request.method == "POST":
+        cocktail_name = request.get_json()["name"]
+        ingred_list = request.get_json()["ingredients"]
+        # TODO: good checks to make sure the ingred list is ok
+        cocktail = Cocktail(name=cocktail_name)
+        for ingred_id in ingred_list:
+            cocktail.ingredients.append(ingred_id)
+        db.session.commit()
+    if request.method == "GET":
+        pass
+
 
     if __name__ == "__main__":
         app.run(c.DEBUG)
