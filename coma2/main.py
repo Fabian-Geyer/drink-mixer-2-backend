@@ -1,6 +1,6 @@
 from flask import jsonify, request, abort
 
-from coma2.models.cocktails import Cocktail, Ingredient
+from coma2.models.cocktails import Cocktail, CocktailIngredient, Ingredient
 from coma2.settings import app, db
 import coma2.constants as c
 
@@ -29,19 +29,20 @@ def handle_ingredient():
 @app.route("/api/cocktails", methods=["POST", "GET"])
 def handle_cocktail():
     if request.method == "POST":
-        # TODO: add ingred amount to request
         cocktail_name = request.get_json()["name"]
         # check for duplicates
         duplicate = Cocktail.query.filter_by(name=cocktail_name).first()
         if not duplicate:
             ingred_list = request.get_json()["ingredients"]
             cocktail = Cocktail(name=cocktail_name)
-            for ingred_id in ingred_list:
+            for i in ingred_list:
                 try:
-                    ingred = Ingredient.query.filter_by(id=ingred_id).first()
-                    cocktail.ingredients.append(ingred)
+                    ingred = Ingredient.query.filter_by(id=i["id"]).first()
+                    cocktail_ingred = CocktailIngredient(amount=i["amount"])
+                    cocktail_ingred.ingredient = ingred
+                    cocktail.ingredients.append(cocktail_ingred)
                 except:
-                    return abort(400, "Ingredient with ID " + str(ingred_id) +
+                    return abort(400, "Ingredient with ID " + str(i["i"]) +
                                  " does not exist")
             db.session.commit()
             return jsonify(cocktail.serialize)
