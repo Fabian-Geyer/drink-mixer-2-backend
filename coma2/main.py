@@ -52,5 +52,10 @@ def handle_cocktail():
         return jsonify([elem.serialize for elem in db.session.query(
             Cocktail).order_by(Cocktail.name)])
 
+# TODO: add slot endpoint (optional: ingred_id)
+# TODO: delete slot by id endpoint
+# TODO: edit slot by id endpoint
+# TODO: GET slots endpoint (ordered by id)
+
     if __name__ == "__main__":
         app.run(c.DEBUG)
