@@ -83,4 +83,5 @@ class Cocktail(db.Model):
         return {"id": self.id,
                 "timestamp": self.timestamp,
                 "name": self.name,
+                "ingredients": [i.name for i in self.ingredients]
                 }

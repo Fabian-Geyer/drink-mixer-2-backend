@@ -21,7 +21,8 @@ def handle_ingredient():
         else:
             return abort(400, "This Ingredient name already exists")
     if request.method == "GET":
-        return jsonify([elem.serialize for elem in db.session.query(Ingredient).order_by(Ingredient.name)])
+        return jsonify([elem.serialize for elem in db.session.query(Ingredient).order_by(
+            Ingredient.name)])
         # TODO: allow filtering by alcohol etc.
 
 
@@ -31,7 +32,7 @@ def handle_cocktail():
         cocktail_name = request.get_json()["name"]
         # check for duplicates
         duplicate = Cocktail.query.filter_by(name=cocktail_name).first()
-        if not duplicate:    
+        if not duplicate:
             ingred_list = request.get_json()["ingredients"]
             cocktail = Cocktail(name=cocktail_name)
             for ingred_id in ingred_list:
@@ -45,9 +46,9 @@ def handle_cocktail():
             return jsonify(cocktail.serialize)
         else:
             return abort(400, "Cocktail name already exists")
-
     if request.method == "GET":
-        pass
+        return jsonify([elem.serialize for elem in db.session.query(
+            Cocktail).order_by(Cocktail.name)])
 
     if __name__ == "__main__":
         app.run(c.DEBUG)
