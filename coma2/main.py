@@ -29,6 +29,7 @@ def handle_ingredient():
 @app.route("/api/cocktails", methods=["POST", "GET"])
 def handle_cocktail():
     if request.method == "POST":
+        # TODO: add ingred amount to request
         cocktail_name = request.get_json()["name"]
         # check for duplicates
         duplicate = Cocktail.query.filter_by(name=cocktail_name).first()
