@@ -1,5 +1,7 @@
 from coma2.models.cocktails import Ingredient, Cocktail, CocktailIngredient
 from coma2.models.cocktails import db as cocktail_db
+from coma2.models.slots import Slot
+from coma2.models.slots import db as slot_db
 
 cocktail_db.drop_all()
 cocktail_db.create_all()
@@ -29,5 +31,8 @@ ci_4.ingredient = ingred_3
 cocktail_2.ingredients.append(ci_4)
 
 cocktail_db.session.add_all([ingred_1, ingred_2, ingred_3])
+
+# slot setup
+
 
 cocktail_db.session.commit()
