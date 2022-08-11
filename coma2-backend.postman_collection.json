@@ -68,7 +68,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\": \"Screwdriver\",\n\t\"ingredients\": [1, 2]\n}",
+					"raw": "{\n\t\"name\": \"Screwdriver2\",\n\t\"ingredients\": [\n        {\n            \"id\": 1,\n            \"amount\": 2\n        },\n        {\n            \"id\": 2,\n            \"amount\": 1\n        }\n    ]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -76,20 +76,92 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:5055/api/cocktails",
-					"protocol": "http",
+					"raw": "{{coma2_base_url}}/api/cocktails",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{coma2_base_url}}"
 					],
-					"port": "5055",
 					"path": [
 						"api",
 						"cocktails"
 					]
 				}
+			},
+			"response": []
+		},
+		{
+			"name": "cocktails",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{coma2_base_url}}/api/cocktails",
+					"host": [
+						"{{coma2_base_url}}"
+					],
+					"path": [
+						"api",
+						"cocktails"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "change slot",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 1,\n    \"amount_percentage\": 30 \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{coma2_base_url}}/api/slots",
+					"host": [
+						"{{coma2_base_url}}"
+					],
+					"path": [
+						"api",
+						"slots"
+					]
+				},
+				"description": "the parameters \"amount_percentage\" and \"ingredient_id\" are optional and don't change if you do not specify"
+			},
+			"response": []
+		},
+		{
+			"name": "change slot Copy",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{coma2_base_url}}/api/slots",
+					"host": [
+						"{{coma2_base_url}}"
+					],
+					"path": [
+						"api",
+						"slots"
+					]
+				},
+				"description": "the parameters \"amount_percentage\" and \"ingredient_id\" are optional and don't change if you do not specify"
 			},
 			"response": []
 		}
