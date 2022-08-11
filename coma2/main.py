@@ -55,7 +55,7 @@ def handle_cocktail():
             Cocktail).order_by(Cocktail.name)])
 
 
-@app.route("/api/slots", methods=["PUT"])
+@app.route("/api/slots", methods=["PUT", "GET"])
 def handle_slot():
     """Endpoint to get info about slots and to change single slots"""
     if request.method == "PUT":
@@ -67,6 +67,9 @@ def handle_slot():
             slot.amount_percentage = req["amount_percentage"]
         db.session.commit()
         return jsonify(slot.serialize)
+    if request.method == "GET":
+        return jsonify([elem.serialize for elem in db.session.query(
+            Slot).order_by(Slot.id)])
         
         
 # TODO: add slot endpoint (optional: ingred_id)
