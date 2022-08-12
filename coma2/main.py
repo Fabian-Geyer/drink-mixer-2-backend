@@ -55,6 +55,29 @@ def handle_cocktail():
             Cocktail).order_by(Cocktail.name)])
 
 
+@app.route("/api/cocktails/available", methods=["GET"])
+def handle_available_cocktails():
+    if request.method == "GET":
+        available_cocktails = []
+        for cocktail in db.session.query(Cocktail):
+            # get list of needed ingredient ids
+            ingreds = []
+            for ingred in cocktail.ingredients:
+                ingreds.append(ingred.ingredient_id)
+            # get list of available ingred ids
+            available_ingred_ids = []
+            for slot in db.session.query(Slot):
+                available_ingred_ids.append(slot.ingredient_id)
+            # remove doubles
+            available_ingred_ids = [*set(available_ingred_ids)]
+            # check if all ids are available
+            intersection = list(
+                set(ingreds).intersection(available_ingred_ids))
+            if (intersection == ingreds):
+                available_cocktails.append(cocktail)
+        return jsonify([c.serialize for c in available_cocktails])
+
+
 @app.route("/api/slots", methods=["PUT", "GET"])
 def handle_slot():
     """Endpoint to get info about slots and to change single slots"""
@@ -70,12 +93,6 @@ def handle_slot():
     if request.method == "GET":
         return jsonify([elem.serialize for elem in db.session.query(
             Slot).order_by(Slot.id)])
-        
-        
-# TODO: add slot endpoint (optional: ingred_id)
-# TODO: delete slot by id endpoint
-# TODO: edit slot by id endpoint
-# TODO: GET slots endpoint (ordered by id)
 
     if __name__ == "__main__":
         app.run(c.DEBUG)
