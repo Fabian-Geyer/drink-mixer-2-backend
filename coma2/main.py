@@ -94,5 +94,9 @@ def handle_slot():
         return jsonify([elem.serialize for elem in db.session.query(
             Slot).order_by(Slot.id)])
 
-    if __name__ == "__main__":
-        app.run(c.DEBUG)
+# TODO: delete cocktail by id
+# TODO: delete ingredient by id -> should also delete cocktails
+# TODO: edit cocktail -> delete ingreds by id etc. -> complicated
+
+if __name__ == "__main__":
+    app.run(c.DEBUG)
