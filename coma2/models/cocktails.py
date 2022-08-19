@@ -86,6 +86,6 @@ class Ingredient(db.Model):
         Return item in serializeable format
         """
         return {"id": self.id,
-                "timestamp": self.timestamp,
                 "name": self.name,
+                "alcohol_percentage": self.alcohol_percentage
                 }
