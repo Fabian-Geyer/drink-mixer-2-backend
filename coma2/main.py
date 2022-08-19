@@ -112,7 +112,6 @@ def handle_slot():
             Slot).order_by(Slot.id)])
 
 # TODO: delete cocktail by id
-# TODO: delete ingredient by id -> should also delete cocktails
 # TODO: edit cocktail -> delete ingreds by id etc. -> complicated
 
 
