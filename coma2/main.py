@@ -45,7 +45,7 @@ def handle_ingredient():
         return {}
 
 
-@app.route("/api/cocktails", methods=["POST", "GET"])
+@app.route("/api/cocktails", methods=["POST", "GET", "DELETE"])
 def handle_cocktail():
     if request.method == "POST":
         cocktail_name = request.get_json()["name"]
@@ -70,6 +70,16 @@ def handle_cocktail():
     if request.method == "GET":
         return jsonify([elem.serialize for elem in db.session.query(
             Cocktail).order_by(Cocktail.name)])
+    if request.method == "DELETE":
+        id = request.get_json()["id"]
+        cocktail = Cocktail.query.filter_by(id=id).first()
+        if cocktail is None:
+            abort(400, "This cocktail does not exist")
+        msg = cocktail.serialize
+        Cocktail.query.filter_by(id=id).delete()
+        CocktailIngredient.query.filter_by(cocktail_id=id).delete()
+        db.session.commit()
+        return jsonify(msg)
 
 
 @app.route("/api/cocktails/available", methods=["GET"])
