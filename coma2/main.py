@@ -7,7 +7,7 @@ from coma2.settings import app, db
 import coma2.constants as c
 
 
-@app.route("/api/ingredients", methods=["POST", "GET"])
+@app.route("/api/ingredients", methods=["POST", "GET", "DELETE"])
 def handle_ingredient():
     if request.method == "POST":
         ingred_name = request.get_json()["name"]
@@ -26,6 +26,23 @@ def handle_ingredient():
         return jsonify([elem.serialize for elem in db.session.query(Ingredient).order_by(
             Ingredient.name)])
         # TODO: allow filtering by alcohol etc.
+    if request.method == "DELETE":
+        id = request.get_json()["id"]
+        ingred = Ingredient.query.filter_by(id=id).first()
+        if ingred is None:
+            abort(400, "This ingredient does not exist")
+        # get list of cocktails to delete
+        try:
+            cocktails_to_delete = [ci.cocktail.id for ci in ingred.cocktails]
+            for c_id in cocktails_to_delete:
+                Cocktail.query.filter_by(id=c_id).delete()
+                CocktailIngredient.query.filter_by(cocktail_id=c_id).delete()
+        except:
+            pass
+        Ingredient.query.filter_by(id=id).delete()
+        # TODO: also change slots to id 0 if deleted
+        db.session.commit()
+        return {}
 
 
 @app.route("/api/cocktails", methods=["POST", "GET"])
@@ -97,6 +114,7 @@ def handle_slot():
 # TODO: delete cocktail by id
 # TODO: delete ingredient by id -> should also delete cocktails
 # TODO: edit cocktail -> delete ingreds by id etc. -> complicated
+
 
 if __name__ == "__main__":
     app.run(c.DEBUG)
