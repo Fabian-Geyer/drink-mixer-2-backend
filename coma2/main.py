@@ -1,4 +1,4 @@
-from coma2.settings import app, db
+from coma2.settings import app
 import coma2.constants as c
 
 

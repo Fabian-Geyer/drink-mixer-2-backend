@@ -1,7 +1,7 @@
-import imp
 from flask import Blueprint, request, abort, jsonify
 from coma2.cocktails.models import Cocktail, CocktailIngredient, Ingredient
-from coma2.settings import db, app
+from coma2.slots.models import Slot
+from coma2.settings import db
 
 
 cocktails = Blueprint('cocktails', __name__)
