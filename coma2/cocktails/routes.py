@@ -7,7 +7,7 @@ from coma2.settings import db, app
 cocktails = Blueprint('cocktails', __name__)
 
 
-@app.route("/api/cocktails", methods=["POST", "GET", "DELETE"])
+@cocktails.route("/api/cocktails", methods=["POST", "GET", "DELETE"])
 def handle_cocktail():
     if request.method == "POST":
         cocktail_name = request.get_json()["name"]
@@ -44,7 +44,7 @@ def handle_cocktail():
         return jsonify(msg)
 
 
-@app.route("/api/cocktails/available", methods=["GET"])
+@cocktails.route("/api/cocktails/available", methods=["GET"])
 def handle_available_cocktails():
     if request.method == "GET":
         available_cocktails = []
@@ -67,7 +67,7 @@ def handle_available_cocktails():
         return jsonify([c.serialize for c in available_cocktails])
 
 
-@app.route("/api/ingredients", methods=["POST", "GET", "DELETE"])
+@cocktails.route("/api/ingredients", methods=["POST", "GET", "DELETE"])
 def handle_ingredient():
     if request.method == "POST":
         ingred_name = request.get_json()["name"]

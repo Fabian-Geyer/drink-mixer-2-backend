@@ -8,7 +8,7 @@ from coma2.slots.models import Slot
 slots = Blueprint('slots', __name__)
 
 
-@app.route("/api/slots", methods=["PUT", "GET"])
+@slots.route("/api/slots", methods=["PUT", "GET"])
 def handle_slot():
     """Endpoint to get info about slots and to change single slots"""
     if request.method == "PUT":
