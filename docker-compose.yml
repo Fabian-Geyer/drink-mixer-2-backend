@@ -1,0 +1,22 @@
+version: "3.7"
+
+services:
+  backend:
+    # port: 5055
+    build: .
+    restart: "no"
+    #environment:
+    #  DATABASE_URI: "we might need this later"
+    volumes:
+      - backend-data:/data
+    ports:
+      - 5055:5055
+    networks:
+      - internal
+
+volumes:
+  backend-data:
+
+
+networks:
+  internal:
