@@ -15,8 +15,10 @@ db = SQLAlchemy(app)
 
 # add blueprints
 from coma2.cocktails.routes import cocktails
+from coma2.ingredients.routes import ingredients
 from coma2.slots.routes import slots
 from coma2.settings import app
 
 app.register_blueprint(cocktails)
 app.register_blueprint(slots)
+app.register_blueprint(ingredients)
