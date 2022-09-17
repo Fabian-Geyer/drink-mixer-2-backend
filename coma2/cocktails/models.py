@@ -43,9 +43,14 @@ class Cocktail(db.Model):
         """
         Return item in serializeable format
         """
+        ingredients = []
+        for assoc in self.ingredients:
+            ingredient = assoc.ingredient.serialize
+            ingredient["amount"] = assoc.amount
+            ingredients.append(ingredient)
+
         return {"id": self.id,
                 "timestamp": self.timestamp,
                 "name": self.name,
-                "ingredients": [i.ingredient.name for i in self.ingredients],
-                "amounts": [i.amount for i in self.ingredients]
+                "ingredients": ingredients,
                 }
