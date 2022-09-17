@@ -8,10 +8,10 @@ from coma2.slots.models import Slot
 slots = Blueprint('slots', __name__)
 
 
-@slots.route("/api/slots", methods=["PUT", "GET"])
+@slots.route("/api/slots", methods=["PATCH", "GET"])
 def handle_slot():
     """Endpoint to get info about slots and to change single slots"""
-    if request.method == "PUT":
+    if request.method == "PATCH":
         req = request.get_json()
         slot = Slot.query.filter_by(id=req["id"]).first()
         if "ingredient_id" in req.keys():
