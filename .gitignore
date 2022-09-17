@@ -1,4 +1,2 @@
 .venv/
-coma2/__pycache__/
-coma2/slots/__pycache__
-coma2/cocktails/__pycache__
+*pycache*
