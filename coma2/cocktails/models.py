@@ -43,10 +43,14 @@ class Cocktail(db.Model):
         """
         Return item in serializeable format
         """
+        # Calculate percentage
+        total_amount = sum([assoc.amount for assoc in self.ingredients])
+
         ingredients = []
         for assoc in self.ingredients:
             ingredient = assoc.ingredient.serialize
             ingredient["amount"] = assoc.amount
+            ingredient["amount_percentage"] = round(100*assoc.amount/total_amount)
             ingredients.append(ingredient)
 
         return {"id": self.id,
