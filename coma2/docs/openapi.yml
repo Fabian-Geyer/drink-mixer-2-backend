@@ -36,10 +36,16 @@ paths:
                   type: string
                   example: "Sex on the beach"
                 ingredients:
-                  example: [2, 5]
                   type: array
                   items:
-                    type: integer
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 2
+                      amount:
+                        type: integer
+                        example: 5
 
         required: true
       responses:
