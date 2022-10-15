@@ -1,4 +1,4 @@
-from coma2.settings import app
+from coma2.config import app
 import coma2.constants as c
 
 

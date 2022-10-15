@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 
-from coma2.settings import db, app
+from coma2.config import db, app
 from coma2.slots.models import Slot
 
 

@@ -2,7 +2,7 @@ from flask import Blueprint, request, abort, jsonify
 
 from coma2.cocktails.models import Cocktail, CocktailIngredient
 from coma2.ingredients.models import Ingredient
-from coma2.settings import db
+from coma2.config import db
 
 ingredients = Blueprint('ingredients', __name__)
 

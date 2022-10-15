@@ -1,4 +1,4 @@
-from coma2.settings import db
+from coma2.config import db
 
 
 class Slot(db.Model):

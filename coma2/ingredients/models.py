@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from coma2.settings import db
+from coma2.config import db
 
 
 class Ingredient(db.Model):
