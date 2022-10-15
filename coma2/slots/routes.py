@@ -1,4 +1,3 @@
-import imp
 from flask import Blueprint, request, jsonify
 
 from coma2.settings import db, app
