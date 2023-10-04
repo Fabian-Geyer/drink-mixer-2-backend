@@ -1,0 +1,103 @@
+openapi: '3.0.2'
+info:
+  title: coma2 API
+  version: '1.0'
+servers:
+  - url: http://127.0.0.1:5055/api
+paths:
+  /cocktails:
+    get:
+      summary: Get data for all cocktails
+      tags:
+        - cocktail
+      description: "returns list of JSON serialized data for all cocktails"
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Cocktail"
+
+    post:
+      tags:
+        - cocktail
+      summary: Create cocktail
+      description: uses JSON data to create a new cocktail
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "Sex on the beach"
+                ingredients:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 2
+                      amount:
+                        type: integer
+                        example: 5
+
+        required: true
+      responses:
+        default:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cocktail"
+
+components:
+  schemas:
+    Ingredient:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+
+    Cocktail:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        name:
+          type: "string"
+          description: "Cocktail name"
+          example: "Sex on the beach"
+        timestamp:
+          type: "string"
+          description: "time of creation"
+          format: date-time
+          example: "Fri, 09 Sep 2022 07:09:32 GMT"
+        ingredients:
+          type: "array"
+          description: "list of associated ingredients in JSON format"
+          items:
+            $ref: "#/components/schemas/Ingredient"
+
+    Slot:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        ingredient_id:
+          type: integer
+          description: "id of current ingredient (None = empty)"
+          format: int64
+          example: 10
+        
