@@ -1,6 +1,12 @@
 # coma2-backend
 
-This repository will house the backend functionality for CocktailMachineV2.
+This repository will house the backend functionality for a drink mixer developed in my free time.
+This software allows the user to define drink recipes, change the current machine setup and status and order the correct drink based on availability.
+
+## Database
+
+This project uses a simple SQLite Database as the data is straightforward.
+The following tables are used:
 
 ### cocktail
 
@@ -42,3 +48,4 @@ This repository will house the backend functionality for CocktailMachineV2.
 
 ## Resources
 <https://www.digitalocean.com/community/tutorials/how-to-use-many-to-many-database-relationships-with-flask-sqlalchemy>
+

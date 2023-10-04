@@ -121,6 +121,33 @@
 			"response": []
 		},
 		{
+			"name": "cocktail",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": 2\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{coma2_base_url}}/api/cocktails",
+					"host": [
+						"{{coma2_base_url}}"
+					],
+					"path": [
+						"api",
+						"cocktails"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "cocktails",
 			"request": {
 				"method": "GET",
@@ -159,11 +186,11 @@
 		{
 			"name": "change slot",
 			"request": {
-				"method": "PUT",
+				"method": "PATCH",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"amount_percentage\": 100,\n    \"id\": 1,\n    \"ingredient_id\": 0\n}",
+					"raw": "{\n    \"amount_percentage\": 100,\n    \"id\": 13,\n    \"ingredient_id\": 3\n}",
 					"options": {
 						"raw": {
 							"language": "json"
