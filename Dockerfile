@@ -3,16 +3,27 @@ FROM python:3.8-alpine
 
 WORKDIR /app
 
-# RUN apk update && apk add --no-cache postgresql-dev
-
-COPY requirements.txt ./
+# Install build dependencies
 RUN apk add build-base
+
+# Copy and install Python dependencies
+COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Copy application code
 COPY . .
 
+# Install the application
 RUN pip install --no-cache-dir .
 
+# Set environment variables for Flask
+ENV FLASK_APP=coma2.main
+ENV FLASK_ENV=development
+ENV FLASK_RUN_HOST=0.0.0.0
+ENV FLASK_RUN_PORT=5055
+
+# Create volume mount point
 VOLUME /data
 
-CMD ["flask", "run", "--host=0.0.0.0"]
+# Initialize database and start Flask
+CMD ["sh", "-c", "python init_db.py && flask run --host=0.0.0.0 --port=5055"]
