@@ -1,6 +1,7 @@
-from coma2.models.cocktails import Ingredient, Cocktail, CocktailIngredient
-from coma2.models.cocktails import db
-from coma2.models.slots import Slot
+from coma2.ingredients.models import Ingredient
+from coma2.cocktails.models import Cocktail, CocktailIngredient
+from coma2.slots.models import Slot
+from coma2.config import db
 
 db.drop_all()
 db.create_all()
