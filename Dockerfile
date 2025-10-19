@@ -26,4 +26,5 @@ ENV FLASK_RUN_PORT=5055
 VOLUME /data
 
 # Initialize database and start Flask
+# Note: Using init_db.py instead of create_tables.py to avoid circular import issues
 CMD ["sh", "-c", "python init_db.py && flask run --host=0.0.0.0 --port=5055"]
