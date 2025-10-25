@@ -18,7 +18,7 @@ RUN pip install --no-cache-dir .
 
 # Set environment variables for Flask
 ENV FLASK_APP=coma2.main
-ENV FLASK_ENV=development
+ENV FLASK_DEBUG=1
 ENV FLASK_RUN_HOST=0.0.0.0
 ENV FLASK_RUN_PORT=5055
 
