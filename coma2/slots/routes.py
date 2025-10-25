@@ -22,8 +22,13 @@ def handle_slot():
         if "ingredient_id" in req.keys():
             # Check if ingredient_id exists
             ingred = Ingredient.query.filter_by(id=req["ingredient_id"]).first()
-            print(ingred)
-            if ingred is None:
+
+            # Allow clearing slot by setting ingredient_id to 0
+            if req['ingredient_id'] == 0:
+                ingred = True  # Allow ingredient_id 0 to clear slot
+
+            # If ingredient does not exist, return error
+            if not ingred:
                 app.logger.error(f"Ingredient id {req['ingredient_id']} does not exist")
                 return jsonify({"error": "Ingredient id does not exist"}), 400
 
