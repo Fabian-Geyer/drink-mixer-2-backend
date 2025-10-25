@@ -6,7 +6,7 @@ from coma2.config import db
 
 ingredients = Blueprint('ingredients', __name__)
 
-@ingredients.route("/api/ingredients", methods=["POST", "GET", "DELETE"])
+@ingredients.route("/api/ingredients", methods=["POST", "GET", "DELETE", "PUT"])
 def handle_ingredient():
     if request.method == "POST":
         ingred_name = request.get_json()["name"]
@@ -25,6 +25,30 @@ def handle_ingredient():
         return jsonify([elem.serialize for elem in db.session.query(Ingredient).order_by(
             Ingredient.name)])
         # TODO: allow filtering by alcohol etc.
+    if request.method == "PUT":
+        data = request.get_json()
+        id = data["id"]
+        ingred = Ingredient.query.filter_by(id=id).first()
+        if ingred is None:
+            abort(400, "This ingredient does not exist")
+        
+        # Update name if provided
+        if "name" in data:
+            new_name = data["name"]
+            # Check for duplicates only if the name is actually changing
+            if new_name != ingred.name:
+                duplicate = Ingredient.query.filter_by(name=new_name).first()
+                if duplicate:
+                    return abort(400, "This ingredient name already exists")
+                ingred.name = new_name
+        
+        # Update alcohol percentage if provided
+        if "alcohol_percentage" in data:
+            ingred.alcohol_percentage = data["alcohol_percentage"]
+        
+        db.session.commit()
+        return jsonify(ingred.serialize)
+    
     if request.method == "DELETE":
         id = request.get_json()["id"]
         ingred = Ingredient.query.filter_by(id=id).first()
