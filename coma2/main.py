@@ -1,6 +1,28 @@
-from coma2.config import app
-import coma2.constants as c
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+from coma2.cocktails.router import router as cocktails_router
+from coma2.ingredients.router import router as ingredients_router
+from coma2.slots.router import router as slots_router
+
+app = FastAPI(
+    title="coma2",
+    description="CocktailMachine V2 backend API",
+    version="0.2.0",
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(ingredients_router)
+app.include_router(cocktails_router)
+app.include_router(slots_router)
 
 
-if __name__ == "__main__":
-    app.run(c.DEBUG)
+@app.get("/api/health")
+def health() -> dict[str, str]:
+    return {"status": "ok"}

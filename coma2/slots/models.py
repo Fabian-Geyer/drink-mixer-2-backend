@@ -1,33 +1,14 @@
-from coma2.config import db
+from sqlalchemy import Integer
+from sqlalchemy.orm import Mapped, mapped_column
+
+from coma2.database import Base
 
 
-class Slot(db.Model):
-    """
-    Table to keep track of slots and their respective ingredients
-    """
+class Slot(Base):
+    """A physical dispenser port. ingredient_id = 0 means the slot is empty."""
 
     __tablename__ = "slot"
 
-    id = db.Column("id",
-                   db.Integer,
-                   primary_key=True)
-    ingredient_id = db.Column("ingredient_id", db.Integer)
-    amount_percentage = db.Column("amount_percentage", db.Integer)
-
-    def __init__(self, id, ingredient_id, amount_percentage):
-        self.id = id
-        self.ingredient_id = ingredient_id
-        self.amount_percentage = amount_percentage
-
-    def __repr__(self):
-        return f"""{self.id} {self.ingredient_id} {self.amount_percentage}"""
-
-    @property
-    def serialize(self):
-        """
-        Return item in serializeable format
-        """
-        return {"id": self.id,
-                "ingredient_id": self.ingredient_id,
-                "amount_percentage": self.amount_percentage
-                }
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    ingredient_id: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    amount_percentage: Mapped[int] = mapped_column(Integer, nullable=False, default=0)

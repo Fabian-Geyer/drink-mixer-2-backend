@@ -1,30 +1,24 @@
-# start by pulling the python image
-FROM python:3.8-alpine
+FROM python:3.12-slim
 
 WORKDIR /app
 
-# Install build dependencies
-RUN apk add build-base
+# Install uv
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-# Copy and install Python dependencies
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+# Install dependencies first so this layer is cached unless deps change.
+# README.md is needed too: hatchling reads it as the package long_description.
+COPY pyproject.toml uv.lock README.md ./
+RUN uv sync --frozen --no-dev
 
 # Copy application code
 COPY . .
 
-# Install the application
-RUN pip install --no-cache-dir .
+ENV PATH="/app/.venv/bin:$PATH"
+ENV DATABASE_URL="sqlite:////data/coma2.db"
 
-# Set environment variables for Flask
-ENV FLASK_APP=coma2.main
-ENV FLASK_DEBUG=1
-ENV FLASK_RUN_HOST=0.0.0.0
-ENV FLASK_RUN_PORT=5055
-
-# Create volume mount point
+# Persist the sqlite db across container recreation
 VOLUME /data
 
-# Initialize database and start Flask
-# Note: Using init_db.py instead of create_tables.py to avoid circular import issues
-CMD ["sh", "-c", "python init_db.py && flask run --host=0.0.0.0 --port=5055"]
+EXPOSE 5055
+
+CMD ["sh", "-c", "alembic upgrade head && python -m coma2.seed && uvicorn coma2.main:app --host 0.0.0.0 --port 5055"]
