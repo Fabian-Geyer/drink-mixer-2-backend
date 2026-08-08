@@ -20,7 +20,7 @@ Interactive API docs are served at `/docs` (Swagger UI) and `/redoc`.
 ### With Docker
 
 ```bash
-docker-compose up
+docker compose up
 ```
 
 ## Database
