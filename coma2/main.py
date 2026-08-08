@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from coma2.ingredients.router import router as ingredients_router
+
 app = FastAPI(
     title="coma2",
     description="CocktailMachine V2 backend API",
@@ -13,6 +15,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(ingredients_router)
 
 
 @app.get("/api/health")

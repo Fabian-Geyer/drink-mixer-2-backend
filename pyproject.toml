@@ -34,6 +34,11 @@ line-length = 100
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
 
+# FastAPI's Depends()/Query()/etc. in argument defaults is the documented,
+# intentional pattern - not the mutable-default-argument bug B008 targets.
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = ["fastapi.Depends", "fastapi.Query", "fastapi.Path", "fastapi.Body"]
+
 [tool.mypy]
 python_version = "3.12"
 check_untyped_defs = true
