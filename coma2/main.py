@@ -1,6 +1,20 @@
-from coma2.config import app
-import coma2.constants as c
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI(
+    title="coma2",
+    description="CocktailMachine V2 backend API",
+    version="0.2.0",
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
-if __name__ == "__main__":
-    app.run(c.DEBUG)
+@app.get("/api/health")
+def health() -> dict[str, str]:
+    return {"status": "ok"}
