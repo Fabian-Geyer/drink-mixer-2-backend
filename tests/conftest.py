@@ -8,6 +8,7 @@ from sqlalchemy.pool import StaticPool
 
 # Import each feature module's models so Base.metadata knows about their
 # tables before create_all() runs.
+import coma2.cocktails.models  # noqa: F401
 import coma2.ingredients.models  # noqa: F401
 from coma2.database import Base, get_db
 from coma2.main import app

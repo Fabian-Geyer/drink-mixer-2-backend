@@ -3,6 +3,7 @@ from logging.config import fileConfig
 from sqlalchemy import engine_from_config, pool
 
 # Import each feature module's models so autogenerate can see their tables.
+import coma2.cocktails.models  # noqa: E402,F401
 import coma2.ingredients.models  # noqa: E402,F401
 from alembic import context
 from coma2.config import settings
