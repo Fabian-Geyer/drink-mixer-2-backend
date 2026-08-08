@@ -54,3 +54,13 @@ coma2/<feature>/
 Route handlers follow one recurring pattern worth knowing before adding endpoints: a single route often handles multiple HTTP methods via `if request.method == "...":` branches rather than separate route functions, and duplicate-name checks precede inserts (cocktail names and ingredient names must be unique).
 
 API docs: `coma2/docs/openapi.yml` is a hand-maintained OpenAPI spec, served at `/api/docs` via `flask-swagger-ui` (wired up in `coma2/docs/swagger.py`). When adding or changing an endpoint, update this file too. There is also a Postman collection at `coma2-backend.postman_collection.json` for manual testing.
+
+## Ongoing refactor
+
+Branch `refactor-codebase` is rewriting this backend on a modern stack (FastAPI, SQLAlchemy 2.0, Alembic, uv, Ruff, mypy, pytest). See `docs/refactor-requirements.md` for the agreed scope and decisions before making changes on this branch.
+
+## Working conventions on this branch
+
+- Commit in small, logical units (one coherent change per commit), using Conventional Commits messages (`feat:`, `fix:`, `chore:`, `refactor:`, `test:`).
+- Commit locally as you go; do not push until asked.
+- Pause for review at each major checkpoint (e.g. after scaffolding, after each module) rather than running through the whole plan unattended.
