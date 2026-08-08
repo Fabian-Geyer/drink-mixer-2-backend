@@ -12,6 +12,7 @@ from coma2.cocktails.schemas import (
 )
 from coma2.database import get_db
 from coma2.ingredients.models import Ingredient
+from coma2.slots.models import Slot
 
 router = APIRouter(prefix="/api/cocktails", tags=["cocktails"])
 
@@ -86,6 +87,28 @@ def list_cocktails(db: Session = Depends(get_db)) -> list[CocktailRead]:
         .options(selectinload(Cocktail.ingredients).selectinload(CocktailIngredient.ingredient))
     )
     return [_to_read_model(cocktail) for cocktail in cocktails]
+
+
+@router.get("/available", response_model=list[CocktailRead])
+def list_available_cocktails(db: Session = Depends(get_db)) -> list[CocktailRead]:
+    """Cocktails whose required ingredients are all currently loaded in some slot."""
+    loaded_ingredient_ids = {
+        ingredient_id
+        for (ingredient_id,) in db.execute(select(Slot.ingredient_id))
+        if ingredient_id != 0
+    }
+    cocktails = db.scalars(
+        select(Cocktail).options(
+            selectinload(Cocktail.ingredients).selectinload(CocktailIngredient.ingredient)
+        )
+    )
+    available = [
+        cocktail
+        for cocktail in cocktails
+        if {link.ingredient_id for link in cocktail.ingredients} <= loaded_ingredient_ids
+    ]
+    available.sort(key=lambda cocktail: cocktail.name)
+    return [_to_read_model(cocktail) for cocktail in available]
 
 
 @router.get("/{cocktail_id}", response_model=CocktailRead)

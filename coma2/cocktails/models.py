@@ -22,9 +22,7 @@ class Cocktail(Base):
     __tablename__ = "cocktail"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    timestamp: Mapped[datetime] = mapped_column(
-        DateTime, nullable=False, server_default=func.now()
-    )
+    timestamp: Mapped[datetime] = mapped_column(DateTime, nullable=False, server_default=func.now())
     name: Mapped[str] = mapped_column(String, unique=True, nullable=False)
 
     ingredients: Mapped[list[CocktailIngredient]] = relationship(
