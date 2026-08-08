@@ -7,24 +7,20 @@ This software allows the user to define drink recipes, change the current machin
 
 ### Without Docker
 
-Make sure Python3 is installed on your system.
-Create a virtual environment and activate it.
+Install [uv](https://docs.astral.sh/uv/), then from the repo root:
 
 ```bash
-python3 -m venv venv
-source venv/bin/activate
+uv sync
+uv run alembic upgrade head
+uv run uvicorn coma2.main:app --host 0.0.0.0 --port 5055
 ```
 
-Install the required packages.
+Interactive API docs are served at `/docs` (Swagger UI) and `/redoc`.
+
+### With Docker
 
 ```bash
-pip install -r requirements.txt
-```
-
-Run the backend.
-
-```bash
-flask run --host=0.0.0.0
+docker-compose up
 ```
 
 ## Database
