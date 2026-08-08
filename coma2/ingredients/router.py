@@ -2,9 +2,11 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from coma2.cocktails.models import Cocktail, CocktailIngredient
 from coma2.database import get_db
 from coma2.ingredients.models import Ingredient
 from coma2.ingredients.schemas import IngredientCreate, IngredientRead, IngredientUpdate
+from coma2.slots.models import Slot
 
 router = APIRouter(prefix="/api/ingredients", tags=["ingredients"])
 
@@ -61,6 +63,23 @@ def update_ingredient(
 
 @router.delete("/{ingredient_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_ingredient(ingredient_id: int, db: Session = Depends(get_db)) -> None:
+    """Deleting an ingredient also removes any cocktail that requires it (a
+    cocktail can't exist with a missing ingredient) and clears any slot
+    currently loaded with it (a slot can't reference an ingredient that no
+    longer exists).
+    """
     ingredient = _get_ingredient_or_404(db, ingredient_id)
+
+    dependent_cocktails = db.scalars(
+        select(Cocktail)
+        .join(CocktailIngredient)
+        .where(CocktailIngredient.ingredient_id == ingredient_id)
+    )
+    for cocktail in dependent_cocktails:
+        db.delete(cocktail)
+
+    for slot in db.scalars(select(Slot).where(Slot.ingredient_id == ingredient_id)):
+        slot.ingredient_id = 0
+
     db.delete(ingredient)
     db.commit()
