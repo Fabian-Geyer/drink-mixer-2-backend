@@ -21,4 +21,4 @@ VOLUME /data
 
 EXPOSE 5055
 
-CMD ["sh", "-c", "alembic upgrade head && uvicorn coma2.main:app --host 0.0.0.0 --port 5055"]
+CMD ["sh", "-c", "alembic upgrade head && python -m coma2.seed && uvicorn coma2.main:app --host 0.0.0.0 --port 5055"]
