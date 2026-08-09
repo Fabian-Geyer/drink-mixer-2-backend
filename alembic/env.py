@@ -6,6 +6,7 @@ from sqlalchemy import engine_from_config, pool
 import coma2.cocktails.models  # noqa: E402,F401
 import coma2.ingredients.models  # noqa: E402,F401
 import coma2.slots.models  # noqa: E402,F401
+import coma2.status.models  # noqa: E402,F401
 from alembic import context
 from coma2.config import settings
 from coma2.database import Base

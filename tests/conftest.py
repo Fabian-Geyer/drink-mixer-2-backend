@@ -11,6 +11,7 @@ from sqlalchemy.pool import StaticPool
 import coma2.cocktails.models  # noqa: F401
 import coma2.ingredients.models  # noqa: F401
 import coma2.slots.models  # noqa: F401
+import coma2.status.models  # noqa: F401
 from coma2.database import Base, get_db
 from coma2.main import app
 

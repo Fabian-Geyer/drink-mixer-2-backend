@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from coma2.cocktails.router import router as cocktails_router
 from coma2.ingredients.router import router as ingredients_router
 from coma2.slots.router import router as slots_router
+from coma2.status.router import router as status_router
 
 app = FastAPI(
     title="coma2",
@@ -21,6 +22,7 @@ app.add_middleware(
 app.include_router(ingredients_router)
 app.include_router(cocktails_router)
 app.include_router(slots_router)
+app.include_router(status_router)
 
 
 @app.get("/api/health")

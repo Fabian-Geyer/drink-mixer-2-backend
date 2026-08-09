@@ -6,6 +6,7 @@ class Settings(BaseSettings):
 
     database_url: str = "sqlite:///coma2.db"
     debug: bool = True
+    mixing_duration_seconds: int = 8
 
 
 settings = Settings()
