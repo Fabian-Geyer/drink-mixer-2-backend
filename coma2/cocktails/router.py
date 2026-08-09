@@ -10,9 +10,13 @@ from coma2.cocktails.schemas import (
     CocktailRead,
     CocktailUpdate,
 )
+from coma2.cocktails.service import (
+    get_cocktail_with_ingredients,
+    get_loaded_ingredient_ids,
+    is_cocktail_available,
+)
 from coma2.database import get_db
 from coma2.ingredients.models import Ingredient
-from coma2.slots.models import Slot
 
 router = APIRouter(prefix="/api/cocktails", tags=["cocktails"])
 
@@ -38,11 +42,7 @@ def _to_read_model(cocktail: Cocktail) -> CocktailRead:
 
 
 def _get_cocktail_or_404(db: Session, cocktail_id: int) -> Cocktail:
-    cocktail = db.get(
-        Cocktail,
-        cocktail_id,
-        options=[selectinload(Cocktail.ingredients).selectinload(CocktailIngredient.ingredient)],
-    )
+    cocktail = get_cocktail_with_ingredients(db, cocktail_id)
     if cocktail is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Cocktail not found")
     return cocktail
@@ -92,20 +92,14 @@ def list_cocktails(db: Session = Depends(get_db)) -> list[CocktailRead]:
 @router.get("/available", response_model=list[CocktailRead])
 def list_available_cocktails(db: Session = Depends(get_db)) -> list[CocktailRead]:
     """Cocktails whose required ingredients are all currently loaded in some slot."""
-    loaded_ingredient_ids = {
-        ingredient_id
-        for (ingredient_id,) in db.execute(select(Slot.ingredient_id))
-        if ingredient_id != 0
-    }
+    loaded_ingredient_ids = get_loaded_ingredient_ids(db)
     cocktails = db.scalars(
         select(Cocktail).options(
             selectinload(Cocktail.ingredients).selectinload(CocktailIngredient.ingredient)
         )
     )
     available = [
-        cocktail
-        for cocktail in cocktails
-        if {link.ingredient_id for link in cocktail.ingredients} <= loaded_ingredient_ids
+        cocktail for cocktail in cocktails if is_cocktail_available(cocktail, loaded_ingredient_ids)
     ]
     available.sort(key=lambda cocktail: cocktail.name)
     return [_to_read_model(cocktail) for cocktail in available]
